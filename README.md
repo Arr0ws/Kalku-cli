@@ -12,3 +12,4 @@ This calculator is "special" because it can do
 - Logarithm (coming soon)
 - Trigonometry (coming soon)
 
+
