@@ -3,165 +3,163 @@ const chalk = require("chalk")
 const algebra = require("algebra.js")
 const prompt = require("prompt-sync")()
 
+//Constant and shit
 let shown = false
-let pi = 3.1415
+let shown1 = false
+let pi = 3.1415926535
 let pi2 = 22/7
 let e = 271828
 
+//Makes a big ass text
+console.clear()
+figlet("Kalku-cli |>", {font: "ANSI Shadow"}, (err, data) => {
 
+    if (err) {
 
-function calculator() {
-    console.clear()
-    figlet("Calc-cli", {font: "ANSI Shadow"}, (err, data) => {
+        console.log(err)
 
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(chalk.bgWhite(chalk.black(data)))
-            console.log("")
-        }
+    } else {
 
-    })
-
-    setTimeout(() => {
-
-        if (!shown) {
-            console.log(chalk.bgWhite(chalk.black("\n\nWelcome to Calc-cli! [Type MAN for manual]")))
-            shown = true
-        }
-
-        let user = prompt(">").trim()
-
-        if (user === "QUIT") {
-            process.exit()
-        } else if (user === "MAN") {
-            manual()
-        } else if (user === "ALGMODE") {
-            console.log("Algebra mode activate")
-            setTimeout(() => {
-                algebracalc()
-            }, 3000)
-        } else {
-            main(user)
-        }
-
-    }, 3000);
-
-    function main(user) {
-
-        try {
-
-            let result = eval(user)
-            console.log(result)
-
-            setTimeout(() => {
-                calculator()
-            }, 3000)
-
-        } catch (error) {
-
-            console.log(chalk.bgRed("[ERROR]"))
-            setTimeout(() => {
-                calculator()
-            }, 2000)
-
-        }
+        console.log(chalk.white(data))
 
     }
-}
 
+    if (!shown) {
 
+        console.log(chalk.bgBlue(chalk.black("\nWelcome to Kalku-cli! [Type MAN for manual]")))         
+        shown = true 
 
-calculator()
+    }
 
-function algebracalc() {
+})
 
-    console.clear()
-    figlet("Calc-cli", {font: "ANSI Shadow"}, (err, data) => {
-
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(chalk.bgWhite(chalk.black(data)))
-            console.log("")
-        }
-
-    })
+function calculator() {
 
     setTimeout(() => {
+        loop(true)
+    }, 2000);
 
-        let user1 = prompt(">").trim()
+    function loop(skipClear = false) {
+        //Appears after 3 second
+        if (!skipClear) console.clear();
+        console.log("")
+        let user = prompt(chalk.bgWhite(chalk.black("Kalku |>"))).trim()
 
-        if (user1 === "QUIT") {
+        if (user === "QUIT") {
+
             process.exit()
-        } else if (user1 === "EXIT ALG") {
-            calculator()
+
+        } else if (user === "MAN") {
+
+            manual()
+
+        } else if (user === "ALGMODE") {
+
+            console.log("Algebra mode activate")
+            setTimeout(() => {
+                algcalc()
+            }, 3000)
+
         } else {
-            mainalg(user1)
+
+            main(user)
+
         }
+        //Calculation
+        function main(user) {
 
-    }, 3000);
+            try {
 
-    function mainalg(user1) {
+                let result = eval(user)
+                console.log(result)
+                loop(true)
 
-        try {
-        
-            if (user1.includes("=")) {
+            } catch (error) {
 
-                let eq = algebra.parse(user1)
-                let solution = eq.solveFor("x")
-                console.log(`x = ${solution}`)
-
-            } else {
-
-                let expr = algebra.parse(user1)
-                console.log(expr.toString())
+                console.log(chalk.bgRed("[ERROR]"))
+                loop(true)
 
             }
 
-            setTimeout(() => {
-                algebracalc()
-            }, 3000)
-
-        } catch (error) {
-
-            console.log(chalk.bgRed("[ERROR]"))
-            setTimeout(() => {
-                algebracalc()
-            }, 2000)
-
         }
+        //Manual
+        function manual() {
+
+            console.log(chalk.bgGreenBright(chalk.black("MANUAL")))
+            console.log(
+
+                `- ALGMODE (Activating Algebra mode)`,
+                `\nExample: 2x+10=4 or 2x+1x`,
+                `\n- QUIT (Quitting the program)`,
+                `\n- EXIT ALG (Exitting the Algebra mode)`,
+                `\n- EXIT MAN (Exitting the Manual)`, 
+
+            )
+
+            loop(true)
+    
+        }
+
+
     }
+
 }
 
-function manual() {
+calculator()
 
-    console.clear()
-    figlet("Calc-CLI", {font: "ANSI Shadow"}, (err, data) => {
-
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(chalk.bgWhite(chalk.black(data)))
-            console.log("")
-        }
-
-    })
-
-    setTimeout(() => {
-        console.log(chalk.bgGreenBright(chalk.black("MANUAL")))
-        console.log(
-            `- ALGMODE (Activating Algebra mode)`,
-            `\nExample: 2x+10=4 or 2x+1x`,
-            `\n- QUIT (Quitting the program)`,
-            `\n- EXIT ALG (Exitting the Algebra mode)`,
-            `\n- EXIT MAN (Exitting the Manual)`,
-        )
-
-        let user2 = prompt(">")
-        if (user2 === "EXIT MAN") {
-            calculator()
-        }
-    }, 3000);
+function algcalc() {
     
+    setTimeout(() => {
+        loop2(true)
+    }, 3000);
+
+    function loop2(skipClear1 = false) {
+
+        if (!skipClear1) console.clear()
+        console.log("")
+        let user1 = prompt(chalk.bgWhite(chalk.black("Kalku |>"))).trim()
+
+        if (user1 === "QUIT") {
+    
+            process.exit()
+
+        } else if (user1 === "EXIT ALG") {
+    
+            calculator()
+
+        } else {
+
+            mainalg(user1)
+    
+        }
+
+        function mainalg(user1) {
+
+            try {
+    
+                if (user1.includes("=")) {
+
+                    let eq = algebra.parse(user1)
+                    let solution = eq.solveFor("x")
+                    console.log(chalk.yellow(`x = ${solution}`))
+
+                } else {
+
+                    let expr = algebra.parse(user1)
+                    console.log(chalk.yellow(expr.toString()))
+    
+                }
+    
+                loop2(true)
+
+            } catch (error) {
+
+                console.log(chalk.bgRed("[ERROR]"))
+                loop2(true)
+    
+            }
+
+        }
+
+    }
 }
