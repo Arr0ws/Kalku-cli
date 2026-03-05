@@ -2,15 +2,11 @@ const figlet = require("figlet")
 const chalk = require("chalk")
 const algebra = require("algebra.js")
 const prompt = require("prompt-sync")()
+const Algebrite = require('algebrite');
 
-//Constant and shit
 let shown = false
 let shown1 = false
-let pi = 3.1415926535
-let pi2 = 22/7
-let e = 271828
 
-//Makes a big ass text
 console.clear()
 figlet("Kalku-cli |>", {font: "ANSI Shadow"}, (err, data) => {
 
@@ -26,7 +22,7 @@ figlet("Kalku-cli |>", {font: "ANSI Shadow"}, (err, data) => {
 
     if (!shown) {
 
-        console.log(chalk.bgBlue(chalk.black("\nWelcome to Kalku-cli! [Type MAN for manual]")))         
+        console.log(chalk.bgBlue(chalk.black("\nWelcome to Kalku-cli! [Type 'man' for manual]")))         
         shown = true 
 
     }
@@ -45,27 +41,31 @@ function calculator() {
         console.log("")
         let user = prompt(chalk.bgWhite(chalk.black("Kalku |>"))).trim()
 
-        if (user === "QUIT") {
+        if (user === "quit") {
 
             process.exit()
 
-        } else if (user === "MAN") {
+        } else if (user === "man") {
 
             manual()
 
-        } else if (user === "ALGMODE") {
+        } else if (user === "advmode") {
 
-            console.log("Algebra mode activate")
+            console.log("Advanced mode activate")
             setTimeout(() => {
                 algcalc()
             }, 3000)
 
+        } else if (user1 === "up,up,down,down,left,right,left,right,b,a,start") {
+            
+            easteregg()
+            
         } else {
 
             main(user)
 
         }
-        //Calculation
+
         function main(user) {
 
             try {
@@ -82,17 +82,16 @@ function calculator() {
             }
 
         }
-        //Manual
+
         function manual() {
 
             console.log(chalk.bgGreenBright(chalk.black("MANUAL")))
             console.log(
 
-                `- ALGMODE (Activating Algebra mode)`,
+                `- advmode (Activating advanced mode)`,
                 `\nExample: 2x+10=4 or 2x+1x`,
-                `\n- QUIT (Quitting the program)`,
-                `\n- EXIT ALG (Exitting the Algebra mode)`,
-                `\n- EXIT MAN (Exitting the Manual)`, 
+                `\n- quit (Quitting the program)`,
+                `\n- exit adv (Exitting the advanced mode)`,
 
             )
 
@@ -108,7 +107,7 @@ function calculator() {
 calculator()
 
 function algcalc() {
-    
+
     setTimeout(() => {
         loop2(true)
     }, 3000);
@@ -119,21 +118,49 @@ function algcalc() {
         console.log("")
         let user1 = prompt(chalk.bgWhite(chalk.black("Kalku |>"))).trim()
 
-        if (user1 === "QUIT") {
+        if (user1 === "quit") {
     
             process.exit()
 
-        } else if (user1 === "EXIT ALG") {
+        } else if (user1 === "exit adv") {
     
             calculator()
 
+        } else if (user1 === "man") {
+
+            manual1()
+
+        } else if (user1 === "up,up,down,down,left,right,left,right,b,a,start") {
+        
         } else {
 
-            mainalg(user1)
+            mainadv(user1)
     
         }
 
-        function mainalg(user1) {
+        function manual1() {
+
+            console.log(chalk.bgGreenBright(chalk.black("MANUAL")))
+            console.log(
+
+                `- advmode (Activating advanced mode)`,
+                `\nExample: 2x+10=4 or 2x+1x`,
+                `\n- quit (Quitting the program)`,
+                `\n- exit adv (Exitting the advanced mode)`,
+
+            )
+
+            loop(true)
+    
+        }
+
+
+        function mainadv(user1) {
+
+            let logb = (x, base) => Math.log(x) / Math.log(base)
+            let pi = 3.1415926535
+            let pi2 = 22/7
+            let e = 2.71828
 
             try {
     
@@ -142,6 +169,33 @@ function algcalc() {
                     let eq = algebra.parse(user1)
                     let solution = eq.solveFor("x")
                     console.log(chalk.yellow(`x = ${solution}`))
+
+                } else if (user1.includes("Derivative")) {
+
+                    let expr = user1.replace("Derivative: ", "")
+                    let eqder = Algebrite.run(`derivative(${expr}, x)`)
+                    console.log(eqder)
+
+                } else if (user1.includes("Integral: ")) {
+
+                    let expr = user1.replace("Integral: ", "")
+                    let eqin = Algebrite.run(`integral(${expr}, x)`)
+                    console.log(eqin)
+
+                } else if (user1.includes("logb") || user1.includes("pi") || user1.includes("pi2") || user1.includes("e")) {
+
+                    try {
+
+                        let result = eval(user1)
+                        console.log(result)                
+                        loop2(true)
+            
+                    } catch (error) {
+            
+                        console.log(chalk.bgRed("[ERROR]"))
+                        loop2(true)
+
+                    }
 
                 } else {
 
