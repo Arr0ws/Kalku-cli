@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "algebra.js": "^0.2.6",
+    "algebrite": "^1.4.0",
     "chalk": "^4.1.2",
     "figlet": "^1.10.0",
     "prompt-sync": "^4.2.0"
