@@ -8,8 +8,8 @@ I made this project because i want to make a tool that is useful for everyone
 This calculator is "special" because it can do
 
 - Algebraic equation (Linear and quadratic)
-- Basic calculus (coming soon) 
-- Logarithm (coming soon)
-- Trigonometry (coming soon)
+- Basic calculus  
+- Logarithm 
+- Trigonometry 
 
 
